@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Komorebi — Where Stillness Finds You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ──────────────────────────────────────────────
+       RESET & FOUNDATIONS
+    ────────────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      /* Warm neutrals */
+      --bg-primary:    #F6F1EB;
+      --bg-secondary:  #EDE7DF;
+      --bg-deep:       #E3DCD3;
+      --bg-dark:       #2C2A25;
+
+      /* Text */
+      --text-primary:  #2C2A25;
+      --text-secondary:#6B655C;
+      --text-muted:    #9E9689;
+      --text-on-dark:  #F6F1EB;
+
+      /* Japandi accents */
+      --persimmon:     #C4704B;
+      --persimmon-soft:#D4926F;
+      --moss:          #7B8B6F;
+      --moss-soft:     #96A688;
+      --clay:          #C9A882;
+      --clay-soft:     #DBBFA0;
+      --cedar:         #8B7355;
+
+      /* Typography */
+      --font-serif:    'Cormorant', Georgia, 'Times New Roman', serif;
+      --font-sans:     'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+
+      /* Spacing */
+      --space-xs:  0.5rem;
+      --space-sm:  1rem;
+      --space-md:  2rem;
+      --space-lg:  4rem;
+      --space-xl:  6rem;
+      --space-2xl: 10rem;
+
+      /* Transitions */
+      --ease-gentle: cubic-bezier(0.25, 0.1, 0.25, 1);
+      --ease-breath: cubic-bezier(0.37, 0, 0.63, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-weight: 300;
+      color: var(--text-primary);
+      background-color: var(--bg-primary);
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* Subtle paper grain texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    ::selection {
+      background: var(--clay-soft);
+      color: var(--text-primary);
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ──────────────────────────────────────────────
+       TYPOGRAPHY
+    ────────────────────────────────────────────── */
+    .t-serif { font-family: var(--font-serif); }
+    .t-sans  { font-family: var(--font-sans); }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    h1 { font-size: clamp(3rem, 8vw, 7rem); }
+    h2 { font-size: clamp(2rem, 5vw, 4rem); }
+    h3 { font-size: clamp(1.4rem, 3vw, 2rem); }
+    h4 { font-size: clamp(1.1rem, 2vw, 1.4rem); }
+
+    p {
+      font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+      max-width: 38em;
+      color: var(--text-secondary);
+    }
+
+    .label {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ──────────────────────────────────────────────
+       LAYOUT UTILITIES
+    ────────────────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+    }
+
+    section {
+      position: relative;
+      padding: var(--space-2xl) 0;
+    }
+
+    /* ──────────────────────────────────────────────
+       SCROLL REVEAL SYSTEM
+    ────────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1.2s var(--ease-gentle), transform 1.2s var(--ease-gentle);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+    .reveal-delay-4 { transition-delay: 0.6s; }
+    .reveal-delay-5 { transition-delay: 0.75s; }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 1.2s var(--ease-gentle), transform 1.2s var(--ease-gentle);
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 1.2s var(--ease-gentle), transform 1.2s var(--ease-gentle);
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ──────────────────────────────────────────────
+       NAVIGATION
+    ────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.5rem 0;
+      transition: background 0.8s var(--ease-gentle),
+                  padding 0.6s var(--ease-gentle),
+                  backdrop-filter 0.8s var(--ease-gentle);
+    }
+
+    nav.scrolled {
+      background: rgba(246, 241, 235, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 1rem 0;
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--text-primary);
+    }
+
+    .nav-logo span {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-family: var(--font-sans);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-left: 0.8rem;
+      vertical-align: middle;
+      transform: translateY(-1px);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.4s var(--ease-gentle);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--persimmon);
+      transition: width 0.6s var(--ease-gentle);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ──────────────────────────────────────────────
+       SECTION: HERO
+    ────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 5rem;
+    }
+
+    /* Hero background image */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      opacity: 0.18;
+      filter: saturate(0.6) contrast(0.95);
+    }
+
+    /* Soft gradient overlays on hero */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 70% 20%, rgba(196, 112, 75, 0.06) 0%, transparent 60%),
+        linear-gradient(180deg, var(--bg-primary) 0%, rgba(246, 241, 235, 0.4) 40%, rgba(246, 241, 235, 0.85) 85%, var(--bg-primary) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 10%;
+      left: -5%;
+      width: 40vw;
+      height: 40vw;
+      background: radial-gradient(circle, rgba(123, 139, 111, 0.05) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+      animation: breathGlow 15s var(--ease-breath) infinite reverse;
+    }
+
+    @keyframes breathGlow {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50%      { opacity: 1;   transform: scale(1.08); }
+    }
+
+    .hero-content {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-kanji {
+      font-family: var(--font-serif);
+      font-size: clamp(1rem, 2vw, 1.4rem);
+      color: var(--text-muted);
+      letter-spacing: 0.5em;
+      margin-bottom: var(--space-md);
+      opacity: 0;
+      animation: fadeInSoft 2s 0.5s var(--ease-gentle) forwards;
+    }
+
+    .hero h1 {
+      margin-bottom: var(--space-md);
+      opacity: 0;
+      animation: fadeInUp 2s 0.8s var(--ease-gentle) forwards;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--persimmon);
+    }
+
+    .hero-sub {
+      font-family: var(--font-serif);
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: var(--space-lg);
+      opacity: 0;
+      animation: fadeInUp 2s 1.2s var(--ease-gentle) forwards;
+    }
+
+    .hero-cta-group {
+      opacity: 0;
+      animation: fadeInUp 2s 1.6s var(--ease-gentle) forwards;
+    }
+
+    @keyframes fadeInSoft {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      opacity: 0;
+      animation: fadeInSoft 2s 2.5s var(--ease-gentle) forwards;
+      z-index: 2;
+    }
+
+    .scroll-hint span {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-deep);
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--persimmon-soft);
+      animation: scrollDrop 2.5s var(--ease-breath) infinite;
+    }
+
+    @keyframes scrollDrop {
+      0%   { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    /* Floating leaves canvas */
+    #leaves-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    /* ──────────────────────────────────────────────
+       DECORATIVE: Enso Circle SVG
+    ────────────────────────────────────────────── */
+    .enso-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .enso-svg {
+      width: 80px;
+      height: 80px;
+    }
+
+    .enso-svg circle {
+      fill: none;
+      stroke: var(--clay);
+      stroke-width: 1.5;
+      stroke-dasharray: 220;
+      stroke-dashoffset: 220;
+      transition: stroke-dashoffset 2s var(--ease-gentle);
+      stroke-linecap: round;
+    }
+
+    .enso-svg.drawn circle {
+      stroke-dashoffset: 18;
+    }
+
+    /* ──────────────────────────────────────────────
+       DIVIDERS
+    ────────────────────────────────────────────── */
+    .divider {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-lg) 0;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--bg-deep), transparent);
+    }
+
+    .divider-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--clay);
+      margin: 0 var(--space-md);
+      animation: breathGlow 6s var(--ease-breath) infinite;
+    }
+
+    /* ──────────────────────────────────────────────
+       RESPONSIVE IMAGE UTILITY
+    ────────────────────────────────────────────── */
+    .img-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .img-rounded {
+      border-radius: 4px;
+    }
+
+    /* ──────────────────────────────────────────────
+       SECTION: PHILOSOPHY
+    ────────────────────────────────────────────── */
+    .philosophy {
+      background: var(--bg-primary);
+    }
+
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+      align-items: center;
+    }
+
+    .philosophy-text {
+      padding-right: var(--space-lg);
+    }
+
+    .philosophy-text .label {
+      margin-bottom: var(--space-sm);
+    }
+
+    .philosophy-text h2 {
+      margin-bottom: var(--space-md);
+      color: var(--text-primary);
+    }
+
+    .philosophy-text p {
+      margin-bottom: var(--space-sm);
+      line-height: 1.85;
+    }
+
+    .philosophy-visual {
+      position: relative;
+    }
+
+    .philosophy-img-main {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 3 / 4;
+      box-shadow: 0 20px 60px rgba(44, 42, 37, 0.08);
+    }
+
+    .philosophy-img-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 8s var(--ease-gentle);
+    }
+
+    .philosophy-img-main:hover img {
+      transform: scale(1.03);
+    }
+
+    /* Overlapping accent image */
+    .philosophy-img-accent {
+      position: absolute;
+      bottom: -2rem;
+      left: -2.5rem;
+      width: 45%;
+      aspect-ratio: 1 / 1;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 4px solid var(--bg-primary);
+      box-shadow: 0 12px 40px rgba(44, 42, 37, 0.1);
+      z-index: 2;
+    }
+
+    .philosophy-img-accent img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 6s var(--ease-gentle);
+    }
+
+    .philosophy-img-accent:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Decorative frame line */
+    .philosophy-visual::after {
+      content: '';
+      position: absolute;
+      top: -1rem;
+      right: -1rem;
+      width: 60%;
+      height: 60%;
+      border: 1px solid var(--bg-deep);
+      border-radius: 4px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ──────────────────────────────────────────────
+       SECTION: RITUALS (Offerings)
+    ────────────────────────────────────────────── */
+    .rituals {
+      background: var(--bg-secondary);
+      position: relative;
+    }
+
+    .rituals::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--bg-deep), transparent);
+    }
+
+    .rituals-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto var(--space-xl);
+    }
+
+    .rituals-header .label {
+      margin-bottom: var(--space-sm);
+    }
+
+    .rituals-header h2 {
+      margin-bottom: var(--space-md);
+    }
+
+    .rituals-header p {
+      margin: 0 auto;
+    }
+
+    .rituals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+
+    .ritual-card {
+      background: var(--bg-primary);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.8s var(--ease-gentle),
+                  box-shadow 0.8s var(--ease-gentle);
+    }
+
+    .ritual-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(44, 42, 37, 0.06);
+    }
+
+    .ritual-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 2;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.8s var(--ease-gentle);
+    }
+
+    .ritual-card:nth-child(1)::before { background: var(--persimmon); }
+    .ritual-card:nth-child(2)::before { background: var(--moss); }
+    .ritual-card:nth-child(3)::before { background: var(--clay); }
+
+    .ritual-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .ritual-card-img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ritual-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1.2s var(--ease-gentle);
+    }
+
+    .ritual-card:hover .ritual-card-img img {
+      transform: scale(1.05);
+    }
+
+    .ritual-card-body {
+      padding: var(--space-md);
+    }
+
+    .ritual-card h3 {
+      margin-bottom: var(--space-sm);
+      font-weight: 400;
+    }
+
+    .ritual-card p {
+      font-size: 0.92rem;
+      line-height: 1.8;
+    }
+
+    .ritual-tag {
+      display: inline-block;
+      margin-top: var(--space-md);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0.4em 0.8em;
+      border: 1px solid var(--bg-deep);
+      border-radius: 2px;
+    }
+
+    /* ──────────────────────────────────────────────
+       SECTION: CRAFTSMANSHIP
+    ────────────────────────────────────────────── */
+    .craftsmanship {
+      background: var(--bg-primary);
+    }
+
+    .craft-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: var(--space-xl);
+      align-items: center;
+    }
+
+    .craft-visual {
+      position: relative;
+    }
+
+    .craft-img-main {
+      aspect-ratio: 4 / 5;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(44, 42, 37, 0.08);
+    }
+
+    .craft-img-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 8s var(--ease-gentle);
+    }
+
+    .craft-img-main:hover img {
+      transform: scale(1.03);
+    }
+
+    /* Small overlapping detail image */
+    .craft-img-detail {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1.5rem;
+      width: 40%;
+      aspect-ratio: 1 / 1;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 4px solid var(--bg-primary);
+      box-shadow: 0 12px 40px rgba(44, 42, 37, 0.1);
+      z-index: 2;
+    }
+
+    .craft-img-detail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .craft-text .label {
+      margin-bottom: var(--space-sm);
+    }
+
+    .craft-text h2 {
+      margin-bottom: var(--space-md);
+    }
+
+    .craft-text p {
+      margin-bottom: var(--space-sm);
+      line-height: 1.85;
+    }
+
+    .craft-values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+      margin-top: var(--space-lg);
+    }
+
+    .craft-value {
+      padding-left: var(--space-sm);
+      border-left: 1px solid var(--bg-deep);
+      transition: border-color 0.6s var(--ease-gentle);
+    }
+
+    .craft-value:hover {
+      border-left-color: var(--persimmon-soft);
+    }
+
+    .craft-value h4 {
+      margin-bottom: 0.4rem;
+      font-weight: 400;
+    }
+
+    .craft-value p {
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    /* ──────────────────────────────────────────────
+       SECTION: SEASONAL MOMENTS (Gallery)
+    ────────────────────────────────────────────── */
+    .moments {
+      background: var(--bg-dark);
+      color: var(--text-on-dark);
+      overflow: hidden;
+    }
+
+    .moments .label { color: var(--clay-soft); }
+    .moments p { color: rgba(246, 241, 235, 0.6); }
+
+    .moments-header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .moments-header h2 {
+      color: var(--text-on-dark);
+      margin-bottom: var(--space-md);
+    }
+
+    .moments-header p {
+      margin: 0 auto;
+    }
+
+    .moments-scroll {
+      display: flex;
+      gap: var(--space-md);
+      padding-bottom: var(--space-md);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .moments-scroll::-webkit-scrollbar { display: none; }
+
+    .moment-card {
+      flex: 0 0 320px;
+      scroll-snap-align: start;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      background: rgba(246, 241, 235, 0.04);
+      border: 1px solid rgba(246, 241, 235, 0.06);
+      transition: border-color 0.6s var(--ease-gentle);
+    }
+
+    .moment-card:hover {
+      border-color: rgba(246, 241, 235, 0.12);
+    }
+
+    .moment-img {
+      aspect-ratio: 3 / 4;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .moment-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1.2s var(--ease-gentle);
+    }
+
+    .moment-card:hover .moment-img img {
+      transform: scale(1.04);
+    }
+
+    .moment-meta {
+      padding: var(--space-md);
+    }
+
+    .moment-meta .label {
+      color: var(--clay-soft);
+      margin-bottom: 0.6rem;
+    }
+
+    .moment-meta h4 {
+      color: var(--text-on-dark);
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+    }
+
+    .moment-meta p {
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    /* ──────────────────────────────────────────────
+       SECTION: TESTIMONIAL / QUOTE
+    ────────────────────────────────────────────── */
+    .testimony {
+      background: var(--bg-primary);
+      text-align: center;
+    }
+
+    .testimony-quote {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--text-primary);
+      max-width: 800px;
+      margin: 0 auto var(--space-md);
+    }
+
+    .testimony-quote em {
+      color: var(--persimmon);
+      font-style: italic;
+    }
+
+    .testimony-attr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .testimony-attr .name {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--text-primary);
+    }
+
+    .testimony-attr .role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ──────────────────────────────────────────────
+       SECTION: CONNECT
+    ────────────────────────────────────────────── */
+    .connect {
+      background: var(--bg-secondary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .connect::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(circle, rgba(123, 139, 111, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .connect-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .connect-text {
+      max-width: 520px;
+    }
+
+    .connect-text .label {
+      margin-bottom: var(--space-sm);
+    }
+
+    .connect-text h2 {
+      margin-bottom: var(--space-md);
+    }
+
+    .connect-text > p {
+      margin-bottom: var(--space-lg);
+    }
+
+    .connect-form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .connect-form input,
+    .connect-form textarea {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      border: 1px solid var(--bg-deep);
+      border-radius: 3px;
+      outline: none;
+      transition: border-color 0.6s var(--ease-gentle),
+                  box-shadow 0.6s var(--ease-gentle);
+    }
+
+    .connect-form input::placeholder,
+    .connect-form textarea::placeholder {
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .connect-form input:focus,
+    .connect-form textarea:focus {
+      border-color: var(--clay);
+      box-shadow: 0 0 0 3px rgba(201, 168, 130, 0.12);
+    }
+
+    .connect-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .connect-img {
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      box-shadow: 0 20px 60px rgba(44, 42, 37, 0.08);
+    }
+
+    .connect-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ──────────────────────────────────────────────
+       BUTTONS
+    ────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.6s var(--ease-gentle);
+    }
+
+    .btn-primary {
+      background: var(--text-primary);
+      color: var(--text-on-dark);
+    }
+
+    .btn-primary:hover {
+      background: var(--persimmon);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(196, 112, 75, 0.2);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--bg-deep);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--text-primary);
+      background: rgba(44, 42, 37, 0.03);
+    }
+
+    .btn-arrow {
+      display: inline-block;
+      transition: transform 0.4s var(--ease-gentle);
+    }
+
+    .btn:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+
+    /* ──────────────────────────────────────────────
+       FOOTER
+    ────────────────────────────────────────────── */
+    footer {
+      background: var(--bg-dark);
+      color: var(--text-on-dark);
+      padding: var(--space-xl) 0 var(--space-lg);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .footer-brand h3 {
+      font-weight: 300;
+      margin-bottom: var(--space-sm);
+      color: var(--text-on-dark);
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: rgba(246, 241, 235, 0.5);
+      line-height: 1.7;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--clay-soft);
+      margin-bottom: var(--space-sm);
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .footer-col a {
+      font-size: 0.85rem;
+      color: rgba(246, 241, 235, 0.5);
+      transition: color 0.4s var(--ease-gentle);
+    }
+
+    .footer-col a:hover {
+      color: var(--text-on-dark);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: var(--space-md);
+      border-top: 1px solid rgba(246, 241, 235, 0.08);
+    }
+
+    .footer-bottom p {
+      font-size: 0.75rem;
+      color: rgba(246, 241, 235, 0.3);
+    }
+
+    .footer-bottom .social-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-bottom .social-links a {
+      font-size: 0.75rem;
+      color: rgba(246, 241, 235, 0.3);
+      transition: color 0.4s var(--ease-gentle);
+    }
+
+    .footer-bottom .social-links a:hover {
+      color: var(--clay-soft);
+    }
+
+    /* ──────────────────────────────────────────────
+       HORIZONTAL RULE — Wabi-sabi
+    ────────────────────────────────────────────── */
+    .wabi-line {
+      width: 60px;
+      height: 1px;
+      background: var(--clay);
+      margin: var(--space-md) 0;
+      opacity: 0.5;
+    }
+
+    .wabi-line.center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ──────────────────────────────────────────────
+       PARALLAX-ISH ELEMENTS
+    ────────────────────────────────────────────── */
+    .float-element {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .float-circle {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 1px solid rgba(201, 168, 130, 0.12);
+    }
+
+    /* ──────────────────────────────────────────────
+       RESPONSIVE
+    ────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .philosophy-grid,
+      .craft-layout,
+      .connect-layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+      }
+
+      .philosophy-text {
+        padding-right: 0;
+        order: 1;
+      }
+
+      .philosophy-visual {
+        order: 0;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .craft-visual {
+        order: 0;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .craft-text {
+        order: 1;
+      }
+
+      .connect-img {
+        max-width: 400px;
+        margin: 0 auto;
+        order: 0;
+      }
+
+      .connect-text {
+        order: 1;
+        max-width: 100%;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      section {
+        padding: var(--space-xl) 0;
+      }
+
+      .rituals-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .craft-values {
+        grid-template-columns: 1fr;
+      }
+
+      .moment-card {
+        flex: 0 0 260px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: var(--space-sm);
+        text-align: center;
+      }
+
+      .philosophy-img-accent {
+        bottom: -1rem;
+        left: -1rem;
+        width: 40%;
+      }
+
+      .craft-img-detail {
+        bottom: -1rem;
+        right: -1rem;
+        width: 35%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2.6rem;
+      }
+
+      .philosophy-img-accent,
+      .craft-img-detail {
+        display: none;
+      }
+    }
+
+    /* ──────────────────────────────────────────────
+       CUSTOM CURSOR — optional warmth
+    ────────────────────────────────────────────── */
+    @media (pointer: fine) {
+      .cursor-dot {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 8px;
+        height: 8px;
+        background: var(--persimmon);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10000;
+        mix-blend-mode: multiply;
+        opacity: 0.4;
+        transition: width 0.4s var(--ease-gentle),
+                    height 0.4s var(--ease-gentle),
+                    opacity 0.3s var(--ease-gentle);
+      }
+
+      .cursor-dot.hovering {
+        width: 32px;
+        height: 32px;
+        opacity: 0.15;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot" id="cursor"></div>
+
+  <!-- Floating Leaves Canvas -->
+  <canvas id="leaves-canvas"></canvas>
+
+  <!-- ═══════════════════════════════════════
+       NAVIGATION
+  ═══════════════════════════════════════ -->
+  <nav id="mainNav">
+    <div class="container">
+      <a href="#" class="nav-logo">Komorebi<span>木漏れ日</span></a>
+      <ul class="nav-links">
+        <li><a href="#philosophy">Philosophy</a></li>
+        <li><a href="#rituals">Rituals</a></li>
+        <li><a href="#craft">Craft</a></li>
+        <li><a href="#moments">Moments</a></li>
+        <li><a href="#connect">Connect</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <!-- Background: morning light filtering through slatted blinds -->
+    <div class="hero-bg">
+      <img
+        src="https://images.unsplash.com/photo-1617104678098-de229db51175?w=1920&q=80&auto=format&fit=crop"
+        alt="Soft morning sunlight filtering through minimal wooden blinds casting warm parallel shadows on a cream wall"
+        loading="eager"
+      />
+    </div>
+
+    <div class="hero-content">
+      <p class="hero-kanji">静 寂 の 美</p>
+      <h1>Where <em>Stillness</em><br/>Finds You</h1>
+      <p class="hero-sub">Dawn retreats for the art of unhurried living</p>
+      <div class="hero-cta-group">
+        <a href="#connect" class="btn btn-primary">
+          Begin Your Morning <span class="btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll gently</span>
+      <div class="scroll-line"></div>
+    </div>
+
+    <!-- Floating decorative circle -->
+    <div class="float-element float-circle" style="top: 12%; right: 8%;"></div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       DIVIDER
+  ═══════════════════════════════════════ -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       PHILOSOPHY
+  ═══════════════════════════════════════ -->
+  <section class="philosophy" id="philosophy">
+    <div class="container">
+      <div class="philosophy-grid">
+        <div class="philosophy-text">
+          <p class="label reveal">Our Philosophy</p>
+          <h2 class="reveal reveal-delay-1">Two traditions,<br/>one breath</h2>
+          <div class="wabi-line reveal reveal-delay-2"></div>
+          <p class="reveal reveal-delay-2">
+            Komorebi emerges at the quiet intersection where Scandinavian warmth meets Japanese contemplation—a space where the unhurried precision of wabi-sabi and the embracing comfort of hygge become one practice.
+          </p>
+          <p class="reveal reveal-delay-3">
+            We believe the modern mind craves not more stimulation, but more intentional stillness. Our dawn retreats guide you through the ancient rhythms of tea ceremony, forest bathing, and mindful craft, set within spaces designed to quiet the noise and amplify the senses.
+          </p>
+          <p class="reveal reveal-delay-4">
+            Each morning begins before the world fully wakes—when light is softest, air is cleanest, and the boundary between self and nature dissolves into something simpler.
+          </p>
+        </div>
+
+        <div class="philosophy-visual reveal-right">
+          <!-- Main image: Japanese interior with shoji screens and warm light -->
+          <div class="philosophy-img-main">
+            <img
+              src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&q=80&auto=format&fit=crop"
+              alt="Minimalist interior room with warm morning light filtering through translucent screens onto light oak wood flooring"
+              loading="lazy"
+            />
+          </div>
+          <!-- Accent image: dry botanical arrangement -->
+          <div class="philosophy-img-accent">
+            <img
+              src="https://images.unsplash.com/photo-1545239705-1564e58b9e4a?w=500&q=80&auto=format&fit=crop"
+              alt="Dried botanical arrangement with pampas grass and bare branches in a matte ceramic vase on a wooden shelf"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       RITUALS
+  ═══════════════════════════════════════ -->
+  <section class="rituals" id="rituals">
+    <div class="container">
+      <div class="rituals-header">
+        <p class="label reveal">Our Rituals</p>
+        <h2 class="reveal reveal-delay-1">Three paths to morning stillness</h2>
+        <div class="wabi-line center reveal reveal-delay-2"></div>
+        <p class="reveal reveal-delay-2">
+          Each ritual is a threshold—a gentle passage from the noise of daily life into something more deliberate, more present, more yourself.
+        </p>
+      </div>
+
+      <!-- Ensō circle -->
+      <div class="enso-wrap reveal reveal-delay-2">
+        <svg class="enso-svg" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="35"/>
+        </svg>
+      </div>
+
+      <div class="rituals-grid">
+        <!-- Card 1: Tea Ceremony -->
+        <div class="ritual-card reveal reveal-delay-1">
+          <div class="ritual-card-img">
+            <img
+              src="https://images.unsplash.com/photo-1563822249366-3efb23b8e0c9?w=700&q=80&auto=format&fit=crop"
+              alt="Traditional Japanese matcha tea in a handmade ceramic bowl on a minimal wooden surface with a bamboo whisk nearby"
+              loading="lazy"
+            />
+          </div>
+          <div class="ritual-card-body">
+            <h3>Cha no Yu</h3>
+            <p>
+              A guided tea ceremony at dawn—not instruction, but immersion. Learn to pour with presence, steep with patience, and drink with your whole being. The bowl in your hands becomes a world.
+            </p>
+            <span class="ritual-tag">90 minutes · sunrise</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Forest Bathing -->
+        <div class="ritual-card reveal reveal-delay-2">
+          <div class="ritual-card-img">
+            <img
+              src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=700&q=80&auto=format&fit=crop"
+              alt="Sunlight streaming through a lush green forest canopy of birch and cedar trees with a soft morning mist"
+              loading="lazy"
+            />
+          </div>
+          <div class="ritual-card-body">
+            <h3>Shinrin-yoku</h3>
+            <p>
+              Forest bathing through ancient birch and cedar groves. No destination, no distance—only the practice of being fully arrived. Let the canopy filter both light and thought.
+            </p>
+            <span class="ritual-tag">2 hours · pre-dawn</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Handcraft -->
+        <div class="ritual-card reveal reveal-delay-3">
+          <div class="ritual-card-img">
+            <img
+              src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=700&q=80&auto=format&fit=crop"
+              alt="Artisan hands shaping wet clay on a pottery wheel in warm natural light, creating a handmade ceramic bowl"
+              loading="lazy"
+            />
+          </div>
+          <div class="ritual-card-body">
+            <h3>Te no Shigoto</h3>
+            <p>
+              Hands-on craft workshops in stoneware ceramics and Nordic woodworking. Shape raw clay, join timber without nails, and discover the quiet satisfaction of making something with honest imperfection.
+            </p>
+            <span class="ritual-tag">Half day · morning light</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       CRAFTSMANSHIP
+  ═══════════════════════════════════════ -->
+  <section class="craftsmanship" id="craft">
+    <div class="container">
+      <div class="craft-layout">
+        <div class="craft-visual reveal-left">
+          <!-- Main image: handcrafted ceramics on wooden shelf -->
+          <div class="craft-img-main">
+            <img
+              src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800&q=80&auto=format&fit=crop"
+              alt="Collection of handmade matte stoneware bowls and cups in earthy tones arranged on a raw timber shelf in soft diffuse light"
+              loading="lazy"
+            />
+          </div>
+          <!-- Detail image: wood joinery close-up -->
+          <div class="craft-img-detail">
+            <img
+              src="https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=500&q=80&auto=format&fit=crop"
+              alt="Minimalist Nordic light-oak wood furniture detail showing clean lines and natural grain in warm diffuse light"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div class="craft-text">
+          <p class="label reveal">Craftsmanship</p>
+          <h2 class="reveal reveal-delay-1">Made by hand,<br/>measured in attention</h2>
+          <div class="wabi-line reveal reveal-delay-2"></div>
+          <p class="reveal reveal-delay-2">
+            Every element of a Komorebi retreat is touched by human hands. Our tea bowls are thrown by local ceramicists who understand that a slight unevenness in the lip makes each sip more intimate. Our retreat pavilions are built using traditional timber joinery—no screws, no adhesive—just wood understanding wood.
+          </p>
+          <p class="reveal reveal-delay-3">
+            We source materials the way a good poem sources words: only what is essential, only what earns its place. Undyed linen. Unfired clay. Unfinished cedar. Raw materials that age honestly and gain character, not obsolescence.
+          </p>
+
+          <div class="craft-values">
+            <div class="craft-value reveal reveal-delay-2">
+              <h4>Kanso · 簡素</h4>
+              <p>Elimination of clutter, stripped to essential beauty</p>
+            </div>
+            <div class="craft-value reveal reveal-delay-3">
+              <h4>Fukinsei · 不均整</h4>
+              <p>Balanced asymmetry, controlled irregularity</p>
+            </div>
+            <div class="craft-value reveal reveal-delay-4">
+              <h4>Shibui · 渋い</h4>
+              <p>Subtle, unobtrusive beauty that grows on you</p>
+            </div>
+            <div class="craft-value reveal reveal-delay-5">
+              <h4>Lagom · ラーゴム</h4>
+              <p>Not too much, not too little—just the right amount</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       DIVIDER
+  ═══════════════════════════════════════ -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SEASONAL MOMENTS
+  ═══════════════════════════════════════ -->
+  <section class="moments" id="moments">
+    <div class="container">
+      <div class="moments-header">
+        <p class="label reveal">Seasonal Moments</p>
+        <h2 class="reveal reveal-delay-1">Each season holds<br/>a different silence</h2>
+        <div class="wabi-line center reveal reveal-delay-2" style="background: var(--clay-soft);"></div>
+        <p class="reveal reveal-delay-2">
+          Our retreats change with the light. What you experience in the amber of autumn differs profoundly from the clear stillness of a winter dawn.
+        </p>
+      </div>
+
+      <div class="moments-scroll reveal reveal-delay-3">
+        <!-- Autumn -->
+        <div class="moment-card">
+          <div class="moment-img">
+            <img
+              src="https://images.unsplash.com/photo-1507041957456-9c397ce39c97?w=600&q=80&auto=format&fit=crop"
+              alt="Warm amber autumn forest path with golden fallen leaves and soft sunlight filtering through the canopy"
+              loading="lazy"
+            />
+          </div>
+          <div class="moment-meta">
+            <p class="label">Autumn · 秋</p>
+            <h4>Amber Settling</h4>
+            <p>Persimmon tea under maple canopy, as leaves perform their final choreography</p>
+          </div>
+        </div>
+
+        <!-- Spring -->
+        <div class="moment-card">
+          <div class="moment-img">
+            <img
+              src="https://images.unsplash.com/photo-1462688681110-15bc88b1497c?w=600&q=80&auto=format&fit=crop"
+              alt="Delicate cherry blossoms in soft pink and white against a gentle spring sky with warm diffuse morning light"
+              loading="lazy"
+            />
+          </div>
+          <div class="moment-meta">
+            <p class="label">Spring · 春</p>
+            <h4>First Unfurling</h4>
+            <p>New growth meditation walks, shinrin-yoku through birch stands when sap rises and air shimmers</p>
+          </div>
+        </div>
+
+        <!-- Summer -->
+        <div class="moment-card">
+          <div class="moment-img">
+            <img
+              src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80&auto=format&fit=crop"
+              alt="Golden hour sunlight warming tall meadow grasses with soft amber tones stretching across an open landscape at dusk"
+              loading="lazy"
+            />
+          </div>
+          <div class="moment-meta">
+            <p class="label">Summer · 夏</p>
+            <h4>Long Light</h4>
+            <p>Extended evening ceremonies where twilight stretches and time softens into warm amber stillness</p>
+          </div>
+        </div>
+
+        <!-- Winter -->
+        <div class="moment-card">
+          <div class="moment-img">
+            <img
+              src="https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=600&q=80&auto=format&fit=crop"
+              alt="Minimal winter landscape of snow-covered birch trees in soft morning mist with a pale sky creating a serene monochrome scene"
+              loading="lazy"
+            />
+          </div>
+          <div class="moment-meta">
+            <p class="label">Winter · 冬</p>
+            <h4>Bare Clarity</h4>
+            <p>Snow-silence workshops in ceramic and wood. When the world empties, the hands fill with purpose</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       TESTIMONIAL
+  ═══════════════════════════════════════ -->
+  <section class="testimony">
+    <div class="container">
+      <div class="enso-wrap reveal">
+        <svg class="enso-svg" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="35"/>
+        </svg>
+      </div>
+      <blockquote class="testimony-quote reveal reveal-delay-1">
+        "I came looking for quiet. I found something more honest—a kind of <em>attention</em> I didn't know I'd been missing."
+      </blockquote>
+      <div class="testimony-attr reveal reveal-delay-2">
+        <span class="name">Maren Solberg</span>
+        <span class="role">Architect · Oslo</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       CONNECT
+  ═══════════════════════════════════════ -->
+  <section class="connect" id="connect">
+    <div class="container">
+      <div class="connect-layout">
+        <div class="connect-text">
+          <p class="label reveal">Begin</p>
+          <h2 class="reveal reveal-delay-1">A quiet invitation</h2>
+          <div class="wabi-line reveal reveal-delay-2"></div>
+          <p class="reveal reveal-delay-2">
+            No pressure, no countdown timer. Simply share your name and we'll send a handwritten note about our upcoming seasonal retreats—when the time feels right for you.
+          </p>
+
+          <form class="connect-form reveal reveal-delay-3" onsubmit="handleSubmit(event)">
+            <div class="form-group">
+              <input type="text" name="name" placeholder="Your name" autocomplete="name" required />
+            </div>
+            <div class="form-group">
+              <input type="email" name="email" placeholder="Your email" autocomplete="email" required />
+            </div>
+            <div class="form-group">
+              <textarea name="note" placeholder="Anything you'd like us to know — or leave this empty, that's perfect too"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Send Quietly <span class="btn-arrow">→</span>
+            </button>
+          </form>
+
+          <p class="reveal reveal-delay-4" style="margin-top: var(--space-md); font-size: 0.78rem; color: var(--text-muted);">
+            We respond within a few sunrises. No newsletters, no noise.
+          </p>
+        </div>
+
+        <!-- Connect section image: unbleached linen and ceramics still life -->
+        <div class="connect-img reveal-right">
+          <img
+            src="https://images.unsplash.com/photo-1604079628040-94301bb21b91?w=800&q=80&auto=format&fit=crop"
+            alt="Warm minimal still life of a handmade ceramic cup on unbleached linen with soft diffuse morning window light and cedar wood surface"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Komorebi</h3>
+          <p>Dawn retreats for the art of unhurried living. Where Scandinavian warmth meets Japanese contemplation.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Experience</h4>
+          <ul>
+            <li><a href="#rituals">Cha no Yu</a></li>
+            <li><a href="#rituals">Shinrin-yoku</a></li>
+            <li><a href="#rituals">Te no Shigoto</a></li>
+            <li><a href="#moments">Seasonal Calendar</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>About</h4>
+          <ul>
+            <li><a href="#philosophy">Our Philosophy</a></li>
+            <li><a href="#craft">Craftsmanship</a></li>
+            <li><a href="#">Our Makers</a></li>
+            <li><a href="#">Journal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Practical</h4>
+          <ul>
+            <li><a href="#">How to Arrive</a></li>
+            <li><a href="#">What to Bring</a></li>
+            <li><a href="#">Accessibility</a></li>
+            <li><a href="#connect">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Komorebi Retreats. Made with quiet intention.</p>
+        <div class="social-links">
+          <a href="#">Instagram</a>
+          <a href="#">Pinterest</a>
+          <a href="#">Journal</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════════ -->
+  <script>
+    // ────────────────────────────────────────
+    // Scroll Reveal (Intersection Observer)
+    // ────────────────────────────────────────
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // ────────────────────────────────────────
+    // Ensō Circle Draw on Scroll
+    // ────────────────────────────────────────
+    const ensoSvgs = document.querySelectorAll('.enso-svg');
+    const ensoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('drawn');
+        }
+      });
+    }, { threshold: 0.5 });
+
+    ensoSvgs.forEach(svg => ensoObserver.observe(svg));
+
+    // ────────────────────────────────────────
+    // Navigation Scroll Effect
+    // ────────────────────────────────────────
+    const nav = document.getElementById('mainNav');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 80) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+      lastScroll = scrollY;
+    }, { passive: true });
+
+    // ────────────────────────────────────────
+    // Custom Cursor
+    // ────────────────────────────────────────
+    const cursor = document.getElementById('cursor');
+    if (window.matchMedia('(pointer: fine)').matches && cursor) {
+      let cursorX = 0, cursorY = 0;
+      let targetX = 0, targetY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        targetX = e.clientX;
+        targetY = e.clientY;
+      });
+
+      function updateCursor() {
+        cursorX += (targetX - cursorX) * 0.12;
+        cursorY += (targetY - cursorY) * 0.12;
+        cursor.style.transform = `translate(${cursorX - 4}px, ${cursorY - 4}px)`;
+        requestAnimationFrame(updateCursor);
+      }
+      updateCursor();
+
+      // Hover effect on interactive elements
+      const interactives = document.querySelectorAll('a, button, .ritual-card, input, textarea');
+      interactives.forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+      });
+    } else if (cursor) {
+      cursor.style.display = 'none';
+    }
+
+    // ────────────────────────────────────────
+    // Falling Leaves Particle System
+    // ────────────────────────────────────────
+    const canvas = document.getElementById('leaves-canvas');
+    const ctx = canvas.getContext('2d');
+    let leaves = [];
+    const LEAF_COUNT = 8;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Leaf {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = -20 - Math.random() * 100;
+        this.size = 4 + Math.random() * 6;
+        this.speedY = 0.2 + Math.random() * 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.015;
+        this.swayAmplitude = 15 + Math.random() * 25;
+        this.swaySpeed = 0.005 + Math.random() * 0.01;
+        this.swayOffset = Math.random() * Math.PI * 2;
+        this.opacity = 0.08 + Math.random() * 0.12;
+        this.time = 0;
+
+        const colors = ['#C4704B', '#7B8B6F', '#C9A882', '#96A688', '#D4926F'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+      }
+
+      update() {
+        this.time += this.swaySpeed;
+        this.x += Math.sin(this.time + this.swayOffset) * 0.5 + this.speedX;
+        this.y += this.speedY;
+        this.rotation += this.rotationSpeed;
+
+        if (this.y > canvas.height + 20) {
+          this.reset();
+        }
+      }
+
+      draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = this.color;
+
+        // Leaf shape
+        ctx.beginPath();
+        ctx.moveTo(0, -this.size);
+        ctx.bezierCurveTo(
+          this.size * 0.8, -this.size * 0.5,
+          this.size * 0.6, this.size * 0.5,
+          0, this.size
+        );
+        ctx.bezierCurveTo(
+          -this.size * 0.6, this.size * 0.5,
+          -this.size * 0.8, -this.size * 0.5,
+          0, -this.size
+        );
+        ctx.fill();
+
+        // Stem
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 0.3;
+        ctx.globalAlpha = this.opacity * 0.5;
+        ctx.beginPath();
+        ctx.moveTo(0, -this.size);
+        ctx.lineTo(0, this.size);
+        ctx.stroke();
+
+        ctx.restore();
+      }
+    }
+
+    // Initialize leaves
+    for (let i = 0; i < LEAF_COUNT; i++) {
+      const leaf = new Leaf();
+      leaf.y = Math.random() * canvas.height;
+      leaves.push(leaf);
+    }
+
+    function animateLeaves() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      leaves.forEach(leaf => {
+        leaf.update();
+        leaf.draw(ctx);
+      });
+      requestAnimationFrame(animateLeaves);
+    }
+    animateLeaves();
+
+    // ────────────────────────────────────────
+    // Smooth Scroll for Navigation Links
+    // ────────────────────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // ────────────────────────────────────────
+    // Form Submission
+    // ────────────────────────────────────────
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Sent with care ✓';
+      btn.style.background = 'var(--moss)';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.style.background = '';
+        btn.disabled = false;
+        e.target.reset();
+      }, 3000);
+    }
+
+    // ────────────────────────────────────────
+    // Parallax-ish floating elements
+    // ────────────────────────────────────────
+    const floatElements = document.querySelectorAll('.float-element');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      floatElements.forEach(el => {
+        const speed = 0.03;
+        el.style.transform = `translateY(${scrollY * speed}px)`;
+      });
+    }, { passive: true });
+
+    // ────────────────────────────────────────
+    // Scroll Hint Fade on Scroll
+    // ────────────────────────────────────────
+    const scrollHint = document.querySelector('.scroll-hint');
+    if (scrollHint) {
+      window.addEventListener('scroll', () => {
+        const opacity = Math.max(0, 1 - window.scrollY / 300);
+        scrollHint.style.opacity = opacity;
+      }, { passive: true });
+    }
+  </script>
+
+</body>
+</html>
